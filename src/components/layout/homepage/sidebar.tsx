@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
-import { colorMap } from "@/types/color"
+import { handleRipple } from "@/lib/handleRipple"
+import { colorMap, copyrightColorMap } from "@/types/color"
 import {
   Calendar,
   CircleUserRound,
@@ -31,30 +32,10 @@ function Sidebar({ bgColor }: SidebarInput) {
   const [openSide, setOpenSide] = useState<boolean>(false)
 
   const changeTextColor = colorMap[bgColor] || colorMap["fallback"]
+  const changeCopyrigthColor = copyrightColorMap[bgColor] || copyrightColorMap["fallback"]
 
   const handleToggleSide = () => {
     setOpenSide(prev => !prev)
-  }
-
-  const handleRipple = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-
-    const el = e.currentTarget
-    const rect = el.getBoundingClientRect()
-
-    el.style.setProperty("--ripple-x", `${e.clientX - rect.left}px`)
-    el.style.setProperty("--ripple-y", `${e.clientY - rect.top}px`)
-
-    el.classList.remove("ripple-active")
-    void el.offsetWidth
-    el.classList.add("ripple-active")
-
-    const cleanup = () => {
-      el.classList.remove("ripple-active")
-      el.removeEventListener("animationend", cleanup)
-    }
-
-    el.addEventListener("animationend", cleanup)
   }
 
   return (
@@ -129,7 +110,7 @@ function Sidebar({ bgColor }: SidebarInput) {
       <div className="border-t px-4 py-3 text-sm">
         <div className="flex">
           <span>© 2025</span>
-          <span className={`ml-1 ${changeTextColor.split(":")[1]}`}>Timesheet</span>
+          <span className={cn("ml-1", changeCopyrigthColor)}>Timesheet</span>
         </div>
 
         <div>

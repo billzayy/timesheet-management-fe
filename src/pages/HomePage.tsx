@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/homepage/navbar";
 import Settings from "@/components/layout/homepage/settings-menu";
 import Sidebar from "@/components/layout/homepage/sidebar";
+import MyTimesheet from "@/components/layout/mytimesheet/timesheet";
 import { useState } from "react";
 
 function HomePage() {
@@ -20,8 +21,8 @@ function HomePage() {
                 onClick={() => setOpenSetting(false)}
               />
             )}
-            <div className="relative z-0 h-full w-full">
-              Main Content
+            <div className="relative z-0 h-full w-full bg-gray-200">
+              <MyTimesheet />
             </div>
           </div>
         </div>
