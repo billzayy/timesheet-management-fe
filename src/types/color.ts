@@ -1,0 +1,55 @@
+interface Skin {
+  value: string;
+  label: string;
+  color: string;
+}
+
+export const skins: Skin[] = [
+  { value: "red", label: "Red", color: "bg-red-500" },
+  { value: "pink", label: "Pink", color: "bg-pink-500" },
+  { value: "purple", label: "Purple", color: "bg-purple-500" },
+  { value: "deep-purple", label: "Deep Purple", color: "bg-purple-700" },
+  { value: "indigo", label: "Indigo", color: "bg-indigo-500" },
+  { value: "blue", label: "Blue", color: "bg-blue-500" },
+  { value: "light-blue", label: "Light Blue", color: "bg-blue-400" },
+  { value: "cyan", label: "Cyan", color: "bg-cyan-500" },
+  { value: "teal", label: "Teal", color: "bg-teal-600" },
+  { value: "green", label: "Green", color: "bg-green-600" },
+  { value: "light-green", label: "Light Green", color: "bg-green-400" },
+  { value: "lime", label: "Lime", color: "bg-lime-500" },
+  { value: "yellow", label: "Yellow", color: "bg-yellow-500" },
+  { value: "amber", label: "Amber", color: "bg-amber-500" },
+  { value: "orange", label: "Orange", color: "bg-orange-500" },
+  { value: "deep-orange", label: "Deep Orange", color: "bg-orange-600" },
+  { value: "brown", label: "Brown", color: "bg-stone-600" },
+  { value: "grey", label: "Grey", color: "bg-gray-500" },
+  { value: "blue-grey", label: "Blue Grey", color: "bg-slate-500" },
+  { value: "black", label: "Black", color: "bg-black" },
+];
+
+export const colorMap: Record<string, string> = {
+  "bg-red-500": "hover:text-red-500",
+  "bg-pink-500": "hover:text-pink-500",
+  "bg-purple-500": "hover:text-purple-500",
+  "bg-purple-700": "hover:text-purple-700",
+  "bg-indigo-500": "hover:text-indigo-500",
+  "bg-blue-500": "hover:text-blue-500",
+  "bg-blue-400": "hover:text-blue-400",
+  "bg-cyan-500": "hover:text-cyan-500",
+  "bg-teal-600": "hover:text-teal-600",
+  "bg-green-600": "hover:text-green-600",
+  "bg-green-400": "hover:text-green-400",
+  "bg-lime-500": "hover:text-lime-500",
+  "bg-yellow-500": "hover:text-yellow-500",
+  "bg-amber-500": "hover:text-amber-500",
+  "bg-orange-500": "hover:text-orange-500",
+  "bg-orange-600": "hover:text-orange-600",
+  "bg-stone-600": "hover:text-stone-600",
+  "bg-stone-700": "hover:text-stone-700",
+  "bg-gray-500": "hover:text-gray-500",
+  "bg-gray-600": "hover:text-gray-600",
+  "bg-slate-500": "hover:text-slate-500",
+  "bg-slate-600": "hover:text-slate-600",
+  "bg-black": "hover:text-black",
+  fallback: "hover:text-red-500",
+}

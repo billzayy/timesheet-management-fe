@@ -1,8 +1,13 @@
+import { cn } from "@/lib/utils"
+import { colorMap } from "@/types/color"
 import {
+  Calendar,
   CircleUserRound,
   Minus,
   Plus,
   SquareUserRound,
+  Users,
+  Clock,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -12,15 +17,20 @@ interface SidebarItem {
   link: string
 }
 
+interface SidebarInput {
+  bgColor: string
+}
+
 const PERSONAL_TIMESHEET: SidebarItem[] = [
-  { logo: "logo", name: "My timesheet", link: "" },
-  { logo: "logo", name: "My off requests", link: "" },
-  { logo: "logo", name: "Team working calendar", link: "" },
-  { logo: "logo", name: "My working time", link: "" },
+  { logo: "clock", name: "My timesheet", link: "" },
+  { logo: "team", name: "Team working calendar", link: "" },
+  { logo: "calendar", name: "My working time", link: "" },
 ]
 
-function Sidebar() {
-  const [openSide, setOpenSide] = useState(false)
+function Sidebar({ bgColor }: SidebarInput) {
+  const [openSide, setOpenSide] = useState<boolean>(false)
+
+  const changeTextColor = colorMap[bgColor] || colorMap["fallback"]
 
   const handleToggleSide = () => {
     setOpenSide(prev => !prev)
@@ -74,7 +84,7 @@ function Sidebar() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         <div
-          className="ripple relative flex items-center overflow-hidden px-4 py-3 hover:cursor-pointer hover:text-red-500"
+          className={`ripple relative flex items-center overflow-hidden px-4 py-3 hover:cursor-pointer ${changeTextColor}`}
           onPointerDown={handleRipple}
         >
           <SquareUserRound className="mr-2" />
@@ -83,7 +93,7 @@ function Sidebar() {
 
         <div className="flex flex-col">
           <div
-            className="ripple relative flex items-center justify-between overflow-hidden hover:cursor-pointer hover:text-red-500"
+            className={`ripple relative flex items-center justify-between overflow-hidden hover:cursor-pointer ${changeTextColor}`}
             onClick={handleToggleSide}
             onPointerDown={handleRipple}
           >
@@ -98,15 +108,15 @@ function Sidebar() {
           </div>
 
           {openSide && (
-            <div className="mt-3 flex flex-col pl-10">
+            <div className="mt-2 flex flex-col pl-7">
               {PERSONAL_TIMESHEET.map(item => (
                 <div
                   key={item.name}
-                  className="ripple relative flex overflow-hidden py-2.5 hover:cursor-pointer hover:text-red-500"
+                  className={cn(`ripple relative flex overflow-hidden py-2.5 hover:cursor-pointer`, `${changeTextColor}`)}
                   onClick={() => console.log(item.link)}
                   onPointerDown={handleRipple}
                 >
-                  <span className="px-2">{item.logo}</span>
+                  <span className="px-2">{getLogo(item.logo)}</span>
                   <span>{item.name}</span>
                 </div>
               ))}
@@ -119,7 +129,7 @@ function Sidebar() {
       <div className="border-t px-4 py-3 text-sm">
         <div className="flex">
           <span>© 2025</span>
-          <span className="ml-1 text-red-500">Timesheet</span>
+          <span className={`ml-1 ${changeTextColor.split(":")[1]}`}>Timesheet</span>
         </div>
 
         <div>
@@ -128,6 +138,19 @@ function Sidebar() {
       </div>
     </div>
   )
+}
+
+function getLogo(text: string) {
+  switch (text) {
+    case "calendar":
+      return <Calendar />
+    case "clock":
+      return <Clock />
+    case "team":
+      return <Users />
+    default:
+      return <div></div>
+  }
 }
 
 export default Sidebar
