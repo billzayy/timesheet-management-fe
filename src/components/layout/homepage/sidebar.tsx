@@ -11,6 +11,7 @@ import {
   Clock,
 } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface SidebarItem {
   logo: string
@@ -23,12 +24,13 @@ interface SidebarInput {
 }
 
 const PERSONAL_TIMESHEET: SidebarItem[] = [
-  { logo: "clock", name: "My timesheet", link: "" },
+  { logo: "clock", name: "My timesheet", link: "/mytimesheet" },
   { logo: "team", name: "Team working calendar", link: "" },
   { logo: "calendar", name: "My working time", link: "" },
 ]
 
 function Sidebar({ bgColor }: SidebarInput) {
+  const navigate = useNavigate()
   const [openSide, setOpenSide] = useState<boolean>(false)
 
   const changeTextColor = colorMap[bgColor] || colorMap["fallback"]
@@ -39,34 +41,34 @@ function Sidebar({ bgColor }: SidebarInput) {
   }
 
   return (
-    <div className="flex h-full select-none flex-col border border-t-0 border-l-0 border-r-gray-300 shadow-md">
+    <div className="flex h-full w-md select-none flex-col border border-t-0 border-l-0 border-r-gray-300 shadow-md">
       {/* Header */}
-      <div className="relative flex items-center">
+      <div className="relative flex h-20 w-full items-center overflow-hidden">
         <img
-          className="h-full w-fit object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
           src="https://timesheet.nccsoft.vn/user-img-background.7f354e93c30f9d51fc3a.jpg"
           alt="background"
         />
 
-        <div className="absolute inset-0 flex items-center pl-6 text-white">
+        <div className="relative z-10 flex items-center pl-6 text-white">
           <img
-            className="w-[35%] rounded-full"
+            className="h-10 w-10 rounded-full object-cover"
             src="https://placehold.co/100x100"
             alt="avatar"
           />
 
-          <div className="mx-2">
-            <div>Full name</div>
-            <div>email</div>
+          <div className="ml-3">
+            <div className="text-lg font-semibold">Full name</div>
+            <div className="text-sm opacity-80">email</div>
           </div>
         </div>
       </div>
-
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         <div
           className={`ripple relative flex items-center overflow-hidden px-4 py-3 hover:cursor-pointer ${changeTextColor}`}
           onPointerDown={handleRipple}
+          onClick={() => { navigate("/myprofile") }}
         >
           <SquareUserRound className="mr-2" />
           <span>My information</span>
@@ -94,7 +96,7 @@ function Sidebar({ bgColor }: SidebarInput) {
                 <div
                   key={item.name}
                   className={cn(`ripple relative flex overflow-hidden py-2.5 hover:cursor-pointer`, `${changeTextColor}`)}
-                  onClick={() => console.log(item.link)}
+                  onClick={() => navigate(item.link)}
                   onPointerDown={handleRipple}
                 >
                   <span className="px-2">{getLogo(item.logo)}</span>

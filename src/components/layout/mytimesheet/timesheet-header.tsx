@@ -18,12 +18,11 @@ export default function TimesheetHeader() {
   const buttonStyle = "ripple relative flex items-center overflow-hidden border border-gray-300 px-4 py-3 hover:cursor-pointer hover:bg-gray-200"
 
   return (
-    <div className="flex justify-between items-center">
-      <div className="text-2xl font-semibold text-gray-600 pl-3">{formattedDate}</div>
+    <div className="flex justify-between items-center bg-white">
+      <div className="text-2xl font-semibold text-gray-600">{formattedDate}</div>
       <ul className="flex items-center [&>li]:mx-2 [&>li]:py-4 [&>li]:px-4 [&>li]:text-sm [&>li]:hover:cursor-pointer">
         <li className="bg-red-500 text-white rounded-sm shadow-lg">Refresh</li>
         <li className="bg-green-500 text-white rounded-sm shadow-lg">Today</li>
-        {/* <li>Calendar Day</li> */}
         <li>
           <DayNavigator setGetDate={setGetDate} />
         </li>
