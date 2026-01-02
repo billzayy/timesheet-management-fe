@@ -1,7 +1,7 @@
 import Navbar from "@/components/layout/homepage/navbar";
 import Settings from "@/components/layout/homepage/settings-menu";
 import Sidebar from "@/components/layout/homepage/sidebar";
-import MyTimesheet from "@/components/layout/mytimesheet/timesheet";
+import { Outlet } from "react-router-dom"
 import { useState } from "react";
 
 function HomePage() {
@@ -11,7 +11,7 @@ function HomePage() {
   return (
     <div className="w-full h-screen flex flex-col">
       <Navbar bgColor={bgColor} setOpenSetting={setOpenSetting} />
-      <div className="flex flex-1 overflow-hidden w-full">
+      <div className="flex flex-1 w-full">
         <div className="flex relative w-full">
           <Sidebar bgColor={bgColor} />
           <div className={`w-full relative`}>
@@ -22,7 +22,7 @@ function HomePage() {
               />
             )}
             <div className="relative z-0 h-full w-full bg-gray-200">
-              <MyTimesheet />
+              <Outlet />
             </div>
           </div>
         </div>
