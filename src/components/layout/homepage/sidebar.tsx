@@ -31,76 +31,79 @@ const PERSONAL_TIMESHEET: SidebarItem[] = [
 
 function Sidebar({ bgColor }: SidebarInput) {
   const navigate = useNavigate()
-  const [openSide, setOpenSide] = useState<boolean>(false)
+  const [openSide, setOpenSide] = useState(false)
 
-  const changeTextColor = colorMap[bgColor] || colorMap["fallback"]
-  const changeCopyrigthColor = copyrightColorMap[bgColor] || copyrightColorMap["fallback"]
-
-  const handleToggleSide = () => {
-    setOpenSide(prev => !prev)
-  }
+  const changeTextColor = colorMap[bgColor] || colorMap.fallback
+  const changeCopyrightColor =
+    copyrightColorMap[bgColor] || copyrightColorMap.fallback
 
   return (
-    <div className="flex h-full w-md select-none flex-col border border-t-0 border-l-0 border-r-gray-300 shadow-md">
+    <div className="flex h-full w-64 flex-col border-r border-gray-300 shadow-md bg-white">
       {/* Header */}
-      <div className="relative flex h-20 w-full items-center overflow-hidden">
+      <div className="relative h-20 shrink-0 overflow-hidden">
         <img
           className="absolute inset-0 h-full w-full object-cover"
           src="https://timesheet.nccsoft.vn/user-img-background.7f354e93c30f9d51fc3a.jpg"
           alt="background"
         />
 
-        <div className="relative z-10 flex items-center pl-6 text-white">
+        <div className="relative z-10 flex items-center h-full px-4 text-white">
           <img
             className="h-10 w-10 rounded-full object-cover"
             src="https://placehold.co/100x100"
             alt="avatar"
           />
-
           <div className="ml-3">
-            <div className="text-lg font-semibold">Full name</div>
+            <div className="font-semibold">Full name</div>
             <div className="text-sm opacity-80">email</div>
           </div>
         </div>
       </div>
-      {/* Content */}
+
+      {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         <div
-          className={`ripple relative flex items-center overflow-hidden px-4 py-3 hover:cursor-pointer ${changeTextColor}`}
+          className={cn(
+            "ripple flex items-center px-4 py-3 cursor-pointer",
+            changeTextColor
+          )}
+          onClick={() => navigate("/myprofile")}
           onPointerDown={handleRipple}
-          onClick={() => { navigate("/myprofile") }}
         >
           <SquareUserRound className="mr-2" />
-          <span>My information</span>
+          My information
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <div
-            className={`ripple relative flex items-center justify-between overflow-hidden hover:cursor-pointer ${changeTextColor}`}
-            onClick={handleToggleSide}
+            className={cn(
+              "ripple flex items-center justify-between px-4 py-3 cursor-pointer",
+              changeTextColor
+            )}
+            onClick={() => setOpenSide(v => !v)}
             onPointerDown={handleRipple}
           >
-            <div className="flex px-4 py-3">
+            <div className="flex items-center">
               <CircleUserRound className="mr-2" />
-              <span>Personal timesheet</span>
+              Personal timesheet
             </div>
-
-            <div className="mr-3 text-gray-500">
-              {openSide ? <Minus size={12} /> : <Plus size={12} />}
-            </div>
+            {openSide ? <Minus size={12} /> : <Plus size={12} />}
           </div>
 
           {openSide && (
-            <div className="mt-2 flex flex-col pl-7">
+            <div className="pl-8">
               {PERSONAL_TIMESHEET.map(item => (
                 <div
                   key={item.name}
-                  className={cn(`ripple relative flex overflow-hidden py-2.5 hover:cursor-pointer`, `${changeTextColor}`)}
-                  onClick={() => navigate(item.link)}
+                  className={cn(
+                    "ripple flex items-center py-2 cursor-pointer",
+                    changeTextColor
+                  )}
+                  onClick={() => item.link && navigate(item.link)}
                   onPointerDown={handleRipple}
                 >
-                  <span className="px-2">{getLogo(item.logo)}</span>
-                  <span>{item.name}</span>
+                  <span className="mr-2">{getLogo(item.logo)}</span>
+                  {item.name}
                 </div>
               ))}
             </div>
@@ -109,19 +112,21 @@ function Sidebar({ bgColor }: SidebarInput) {
       </div>
 
       {/* Footer */}
-      <div className="border-t px-4 py-3 text-sm">
-        <div className="flex">
-          <span>© 2025</span>
-          <span className={cn("ml-1", changeCopyrigthColor)}>Timesheet</span>
-        </div>
-
+      <div className="shrink-0 border-t px-4 py-3 text-sm">
         <div>
-          <span className="font-bold">Version</span> 4.3.0.0 [20251812]
+          © 2025
+          <span className={cn("ml-1", changeCopyrightColor)}>
+            Timesheet
+          </span>
+        </div>
+        <div>
+          <strong>Version</strong> 4.3.0.0 [20251812]
         </div>
       </div>
     </div>
   )
 }
+
 
 function getLogo(text: string) {
   switch (text) {

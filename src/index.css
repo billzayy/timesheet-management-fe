@@ -124,6 +124,8 @@
 
 @layer components {
   .ripple {
+    position: relative;      /* 🔑 REQUIRED */
+    overflow: hidden;
     --ripple-x: 50%;
     --ripple-y: 50%;
   }

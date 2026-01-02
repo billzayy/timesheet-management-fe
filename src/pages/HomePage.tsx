@@ -9,25 +9,38 @@ function HomePage() {
   const [openSetting, setOpenSetting] = useState<boolean>(false)
 
   return (
-    <div className="w-full h-screen flex flex-col">
-      <Navbar bgColor={bgColor} setOpenSetting={setOpenSetting} />
-      <div className="flex flex-1 w-full">
-        <div className="flex relative w-full">
+    <div className="h-screen w-full overflow-hidden">
+      {/* Navbar */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-16">
+        <Navbar bgColor={bgColor} setOpenSetting={setOpenSetting} />
+      </div>
+
+      <div className="pt-16 h-screen overflow-hidden">
+        {/* Sidebar */}
+        <div className="fixed top-16 left-0 bottom-0 z-40 w-64">
           <Sidebar bgColor={bgColor} />
-          <div className={`w-full relative`}>
-            {openSetting && (
-              <div
-                className="absolute inset-0 z-10 opacity-25 bg-gray-800"
-                onClick={() => setOpenSetting(false)}
-              />
-            )}
-            <div className="relative z-0 h-full w-full bg-gray-200">
-              <Outlet />
-            </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="ml-64 h-full relative">
+          {/* Overlay */}
+          {openSetting && (
+            <div
+              className="absolute inset-0 z-30 bg-gray-800/40"
+              onClick={() => setOpenSetting(false)}
+            />
+          )}
+
+          {/* Scroll area */}
+          <div className="h-full overflow-y-auto bg-gray-200">
+            <Outlet />
           </div>
         </div>
+
+        {/* Settings panel */}
         <Settings open={openSetting} setBackground={setBgColor} />
       </div>
+
     </div>
   )
 }
