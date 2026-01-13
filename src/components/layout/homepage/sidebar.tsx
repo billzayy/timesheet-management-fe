@@ -13,6 +13,8 @@ import {
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import BackgroundImg from "@/assets/user-img-background.jpg"
+
 interface SidebarItem {
   logo: string
   name: string
@@ -43,7 +45,7 @@ function Sidebar({ bgColor }: SidebarInput) {
       <div className="relative h-20 shrink-0 overflow-hidden">
         <img
           className="absolute inset-0 h-full w-full object-cover"
-          src="https://timesheet.nccsoft.vn/user-img-background.7f354e93c30f9d51fc3a.jpg"
+          src={BackgroundImg}
           alt="background"
         />
 

@@ -2,6 +2,8 @@ import { FileUpIcon, FileText, EllipsisVertical, Flag } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 
+import TimesheetImg from "@/assets/Timesheet.png"
+
 interface NavbarInput {
   bgColor: string
   setOpenSetting: Dispatch<SetStateAction<boolean>>
@@ -11,13 +13,13 @@ function Navbar({ bgColor, setOpenSetting }: NavbarInput) {
   const navigate = useNavigate();
 
   return (
-    <div className={`${bgColor} w-full flex justify-between items-center text-white p-5 shadow-2xl`}>
+    <div className={`${bgColor} w-full flex justify-between items-center text-white p-5 shadow-md`}>
       <div
         className="flex justify-center items-center hover:cursor-pointer"
         onClick={() => { navigate("/") }}
       >
         <img
-          src={"https://timesheet.nccsoft.vn/assets/images/Timesheet.png"}
+          src={TimesheetImg}
           className="w-8 h-8"
         />
         <div>Timesheet</div>
