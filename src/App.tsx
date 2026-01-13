@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from "./pages/HomePage";
 import MyTimesheetPage from "./pages/MyTimesheet";
 import MyProfilePage from "./pages/MyProfilePage";
+import LoginPage from "./pages/LoginPage"
+import { Toaster } from "sonner";
+
 
 function App() {
   return (
@@ -14,8 +17,9 @@ function App() {
             <Route path="mytimesheet" element={<MyTimesheetPage />} />
             <Route path="myprofile" element={<MyProfilePage />} />
           </Route>
+          <Route path="login" element={<LoginPage />} />
         </Routes>
-        {/* <Toaster theme='dark' richColors/> */}
+        <Toaster theme='light' richColors />
       </Router>
     </ThemeProvider>
   )

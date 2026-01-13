@@ -1,5 +1,6 @@
 import { fakeGetAdditionalUser, fakeGetUserDTO, fakeUserData } from "@/types/mock-data"
 import { Mars, Venus } from "lucide-react"
+import axios from 'axios';
 
 interface getRoles {
   name: string
@@ -29,9 +30,30 @@ const roles: getRoles[] = [
 
 export default function MyProfile() {
   const styleBox = "bg-white border shadow-md p-4 my-4"
+  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjgwMTM5NDgsImlkIjoiMjdiOTk3ZDMtNjVjMC00YTIxLWFhOTItNzQ5NTUzYzQ3ZWFmIn0.pC42PsELxXbA6lwdWBu4jVF4sir7DYsRsOhd35C1UoE"
+
+  const fetchUser = async () => {
+    try {
+      const fetchData = await axios.get("http://localhost:8080/api/user/all", {
+        params: {
+          limit: 10,
+          offset: 0
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+      console.log(fetchData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="pb-6 px-4">
-      <div className="font-bold mb-2">My Profile</div>
+      <div className="font-bold mb-2"
+        onClick={() => { fetchUser() }}>My Profile</div>
       <div>
         <div className="main grid grid-cols-[30%_70%] w-full gap-5">
           <div className={`${styleBox} flex flex-col justify-center items-center pt-15 pb-25`}>
@@ -82,7 +104,7 @@ export default function MyProfile() {
         <div className={`${styleBox} w-full grid grid-cols-[50%_50%] gap-1`}>
           {Object.entries(fakeGetAdditionalUser).map(([key, value], index) => (
             <div key={key}>
-              <div className="grid grid-cols-[30%_70%] gap-5 my-5">
+              <div className="ml-2 grid grid-cols-[30%_70%] gap-5 my-5">
                 <div>{getAdditionalTitle[key]}</div>
                 <div>{String(value)}</div>
               </div>

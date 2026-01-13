@@ -1,12 +1,21 @@
 import Navbar from "@/components/layout/homepage/navbar";
 import Settings from "@/components/layout/homepage/settings-menu";
 import Sidebar from "@/components/layout/homepage/sidebar";
-import { Outlet } from "react-router-dom"
-import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
 
 function HomePage() {
   const [bgColor, setBgColor] = useState<string>("bg-red-500")
   const [openSetting, setOpenSetting] = useState<boolean>(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    var checkToken = localStorage.getItem("access_token")
+
+    if (checkToken === null) {
+      navigate("/login")
+    }
+  })
 
   return (
     <div className="h-screen w-full overflow-hidden">
