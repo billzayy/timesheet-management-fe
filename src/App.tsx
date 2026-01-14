@@ -5,6 +5,7 @@ import MyTimesheetPage from "./pages/MyTimesheet";
 import MyProfilePage from "./pages/MyProfilePage";
 import LoginPage from "./pages/LoginPage"
 import { Toaster } from "sonner";
+import UserManagement from "./pages/UserManagement";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route index element={<Navigate to="/mytimesheet" replace />} />
             <Route path="mytimesheet" element={<MyTimesheetPage />} />
             <Route path="myprofile" element={<MyProfilePage />} />
+            <Route path="user" element={<UserManagement />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
         </Routes>

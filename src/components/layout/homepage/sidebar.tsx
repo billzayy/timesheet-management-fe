@@ -2,62 +2,115 @@ import { cn } from "@/lib/utils"
 import { handleRipple } from "@/lib/handleRipple"
 import { colorMap, copyrightColorMap } from "@/types/color"
 import {
-  Calendar,
-  CircleUserRound,
-  Minus,
-  Plus,
   SquareUserRound,
-  Users,
-  Clock,
+  ChevronDown,
+  LogOut,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import BackgroundImg from "@/assets/user-img-background.jpg"
+import SidebarPersonal from "./sidebar-personal"
+import SidebarAdmin from "./sidebar-admin"
 
-interface SidebarItem {
-  logo: string
-  name: string
-  link: string
-}
+import { getUserConfigService } from "@/api/LoginService";
+import { checkGrantedFeature } from "@/lib/checkGrantedPermission"
 
 interface SidebarInput {
   bgColor: string
 }
 
-const PERSONAL_TIMESHEET: SidebarItem[] = [
-  { logo: "clock", name: "My timesheet", link: "/mytimesheet" },
-  { logo: "team", name: "Team working calendar", link: "" },
-  { logo: "calendar", name: "My working time", link: "" },
-]
-
 function Sidebar({ bgColor }: SidebarInput) {
   const navigate = useNavigate()
-  const [openSide, setOpenSide] = useState(false)
+  const [openLogout, setOpenLogout] = useState(false)
+  const [grantedList, setGrantedList] = useState<string[]>([])
+
+  const logoutRef = useRef<HTMLDivElement>(null)
 
   const changeTextColor = colorMap[bgColor] || colorMap.fallback
   const changeCopyrightColor =
     copyrightColorMap[bgColor] || copyrightColorMap.fallback
 
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await getUserConfigService()
+        const permissions = data.result?.auth.granted_permissions ?? []
+
+        checkGrantedFeature(permissions)
+        setGrantedList(permissions)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchConfig()
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        logoutRef.current &&
+        !logoutRef.current.contains(event.target as Node)
+      ) {
+        setOpenLogout(false)
+      }
+    }
+
+    if (openLogout) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   return (
-    <div className="flex h-full w-64 flex-col border-r border-gray-300 shadow-md bg-white">
+    <div
+      ref={logoutRef}
+      className="relative z-40 flex h-full w-64 flex-col border-r border-gray-300 shadow-md bg-white">
       {/* Header */}
-      <div className="relative h-20 shrink-0 overflow-hidden">
+      <div className="relative h-20 shrink-0 ">
         <img
           className="absolute inset-0 h-full w-full object-cover"
           src={BackgroundImg}
           alt="background"
         />
 
-        <div className="relative z-10 flex items-center h-full px-4 text-white">
-          <img
-            className="h-10 w-10 rounded-full object-cover"
-            src="https://placehold.co/100x100"
-            alt="avatar"
-          />
-          <div className="ml-3">
-            <div className="font-semibold">Full name</div>
-            <div className="text-sm opacity-80">email</div>
+        <div className="relative z-10 flex justify-between h-full pl-4 pr-1 text-white">
+          <div className="flex items-center w-full">
+            <img
+              className="h-10 w-10 rounded-full object-cover"
+              src="https://placehold.co/100x100"
+              alt="avatar"
+            />
+            <div className="ml-3 w-full">
+              <div className="font-semibold">Full name</div>
+              <div className="text-sm opacity-80">email</div>
+            </div>
+          </div>
+          <div className="h-full w-1/4 flex justify-end items-end relative">
+            {/* Toggle button */}
+            <div
+              className="cursor-pointer pb-2"
+              onClick={() => setOpenLogout(v => !v)}
+            >
+              <ChevronDown size={16} />
+            </div>
+
+            {openLogout && (
+              <div className="absolute mt-2 w-32 -right-2 -bottom-2 bg-white text-black shadow-xl z-50">
+                <div
+                  className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    localStorage.clear()
+                    navigate('/login')
+                  }}
+                >
+                  <LogOut size={18} />
+                  <div className="mx-2">Log Out</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -75,42 +128,10 @@ function Sidebar({ bgColor }: SidebarInput) {
           <SquareUserRound className="mr-2" />
           My information
         </div>
-
-        <div>
-          <div
-            className={cn(
-              "ripple flex items-center justify-between px-4 py-3 cursor-pointer",
-              changeTextColor
-            )}
-            onClick={() => setOpenSide(v => !v)}
-            onPointerDown={handleRipple}
-          >
-            <div className="flex items-center">
-              <CircleUserRound className="mr-2" />
-              Personal timesheet
-            </div>
-            {openSide ? <Minus size={12} /> : <Plus size={12} />}
-          </div>
-
-          {openSide && (
-            <div className="pl-8">
-              {PERSONAL_TIMESHEET.map(item => (
-                <div
-                  key={item.name}
-                  className={cn(
-                    "ripple flex items-center py-2 cursor-pointer",
-                    changeTextColor
-                  )}
-                  onClick={() => item.link && navigate(item.link)}
-                  onPointerDown={handleRipple}
-                >
-                  <span className="mr-2">{getLogo(item.logo)}</span>
-                  {item.name}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {grantedList.includes("Admin") && (
+          <SidebarAdmin textColor={changeTextColor} />
+        )}
+        <SidebarPersonal textColor={changeTextColor} />
       </div>
 
       {/* Footer */}
@@ -127,20 +148,6 @@ function Sidebar({ bgColor }: SidebarInput) {
       </div>
     </div>
   )
-}
-
-
-function getLogo(text: string) {
-  switch (text) {
-    case "calendar":
-      return <Calendar />
-    case "clock":
-      return <Clock />
-    case "team":
-      return <Users />
-    default:
-      return <div></div>
-  }
 }
 
 export default Sidebar

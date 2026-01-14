@@ -15,7 +15,8 @@ function HomePage() {
     if (checkToken === null) {
       navigate("/login")
     }
-  })
+
+  }, [navigate])
 
   return (
     <div className="h-screen w-full overflow-hidden">
