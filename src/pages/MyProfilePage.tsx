@@ -1,6 +1,6 @@
 import { AdditionalUserDTO, getAdditionalTitle, UserDTO, type getRoles } from "@/dto/user-dto"
 import { Mars, Venus } from "lucide-react"
-import { getUserService } from "@/api/UserService";
+import { getUserService } from "@/api/user.service";
 import { useEffect, useState } from "react";
 import type { UserAPI } from "@/types/response";
 

@@ -47,3 +47,8 @@ export interface UserAPI {
   afternoon_working_time: number,
   id: string
 }
+
+export interface ListResponse<T> {
+  total_count: number,
+  items: T[]
+}

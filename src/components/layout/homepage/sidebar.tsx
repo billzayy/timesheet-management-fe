@@ -13,7 +13,7 @@ import BackgroundImg from "@/assets/user-img-background.jpg"
 import SidebarPersonal from "./sidebar-personal"
 import SidebarAdmin from "./sidebar-admin"
 
-import { getUserConfigService } from "@/api/LoginService";
+import { getUserConfigService } from "@/api/login.service";
 import { checkGrantedFeature } from "@/lib/checkGrantedPermission"
 
 interface SidebarInput {

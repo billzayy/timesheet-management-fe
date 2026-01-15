@@ -66,7 +66,7 @@ export const AdditionalUserDTO = (userData: UserAPI | null): GetAdditionUserDTO 
     EmergencyContact: "",
     EmergencyPhone: "",
     InsuranceStatus: "NONE",
-    DOI: userData?.identify_issue_date,
+    DOI: formatDate(userData?.identify_issue_date),
     Identify: userData?.identify_number,
     IssuedBy: userData?.identify_place,
   }
